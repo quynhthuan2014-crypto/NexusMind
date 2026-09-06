@@ -1,0 +1,46 @@
+{
+  "name": "nexusmind",
+  "version": "1.0.0",
+  "description": "A local-first AI memory workspace for capturing, organizing, searching and using personal context.",
+  "main": "electron/main.cjs",
+  "author": "quynhthuan2014-crypto",
+  "license": "NexusMind Source Available License",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "test": "node --test tests/**/*.test.cjs",
+    "check": "node scripts/check.mjs",
+    "build": "node scripts/check.mjs",
+    "dist": "npm run build && electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^38.0.0",
+    "electron-builder": "^26.0.0"
+  },
+  "build": {
+    "appId": "com.nexusmind.desktop",
+    "productName": "NexusMind",
+    "files": [
+      "electron/**",
+      "renderer/**",
+      "shared/**",
+      "scripts/**",
+      "README.md",
+      "SECURITY.md",
+      "LICENSE",
+      "package.json"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}
