@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#070a12" />
+  <title>NexusMind</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">N</div><div><strong>NexusMind</strong><span>Personal memory OS</span></div></div>
+      <button class="nav active" data-view="home">⌂ <span>Overview</span></button>
+      <button class="nav" data-view="memories">◈ <span>Memories</span><b id="memoryCount">0</b></button>
+      <button class="nav" data-view="search">⌕ <span>Semantic Search</span></button>
+      <button class="nav" data-view="chat">✦ <span>Ask Nexus</span></button>
+      <div class="sidebar-spacer"></div>
+      <button class="nav" data-view="settings">⚙ <span>Settings</span></button>
+      <div class="privacy-card"><span class="pulse"></span><div><strong>Local-first</strong><small>Your memories stay on this device by default.</small></div></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar"><div><span class="eyebrow">NEXUS MIND</span><h1 id="pageTitle">Your second brain</h1></div><div class="top-actions"><button id="importBtn" class="ghost">Import</button><button id="exportBtn" class="ghost">Export</button><button id="newBtn" class="primary">+ New memory</button></div></header>
+      <section id="content" class="content"></section>
+    </main>
+  </div>
+
+  <dialog id="memoryDialog">
+    <form method="dialog" id="memoryForm" class="modal">
+      <div class="modal-head"><div><span class="eyebrow">MEMORY</span><h2 id="dialogTitle">Capture a memory</h2></div><button value="cancel" class="icon-btn">×</button></div>
+      <input type="hidden" id="memoryId" />
+      <label>Title<input id="memoryTitle" maxlength="160" placeholder="e.g. Project ideas" required /></label>
+      <label>Content<textarea id="memoryContent" maxlength="20000" rows="9" placeholder="Write what you want NexusMind to remember..." required></textarea></label>
+      <label>Tags<input id="memoryTags" maxlength="300" placeholder="project, idea, school" /></label>
+      <label class="check"><input type="checkbox" id="memoryPinned" /> Pin this memory</label>
+      <div class="modal-actions"><button value="cancel" class="ghost">Cancel</button><button id="saveMemory" value="default" class="primary">Save memory</button></div>
+    </form>
+  </dialog>
+  <script src="./app.js"></script>
+</body>
+</html>
