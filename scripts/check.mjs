@@ -1,7 +1,6 @@
-import { readFile } from 'node:fs/promises';
-import { readdir } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
-import vm from 'node:vm';
+import { execFileSync } from 'node:child_process';
 
 const root = path.resolve(new URL('.', import.meta.url).pathname, '..');
 const roots = ['electron', 'renderer', 'shared', 'scripts'];
@@ -20,13 +19,12 @@ async function walk(dir) {
 
 const files = (await Promise.all(roots.map((name) => walk(path.join(root, name))))).flat();
 for (const file of files) {
-  const source = await readFile(file, 'utf8');
-  try {
-    if (file.endsWith('.cjs')) new vm.Script(source, { filename: file });
-    else if (file.endsWith('.mjs')) new vm.SourceTextModule(source, { identifier: file });
-    else new vm.Script(source, { filename: file });
-  } catch (error) {
-    throw new Error(`Syntax error in ${path.relative(root, file)}: ${error.message}`);
+  try { execFileSync(process.execPath, ['--check', file], { stdio: 'pipe' }); }
+  catch (error) {
+    const detail = error?.stderr?.toString?.().trim() || error?.message || 'unknown syntax error';
+    throw new Error(`Syntax error in ${path.relative(root, file)}: ${detail}`);
   }
 }
-console.log(`Syntax check passed for ${files.length} JavaScript files.`);
+const required = ['electron/main.cjs','electron/preload.cjs','renderer/index.html','renderer/app.js','renderer/styles.css','shared/memory.cjs'];
+for (const relative of required) await readFile(path.join(root, relative));
+console.log(`Repository check passed: ${files.length} JavaScript files parsed and ${required.length} core files present.`);
